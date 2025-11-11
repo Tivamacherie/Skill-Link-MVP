@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { useAuth, MOCK_USERS } from '../context/MockAuthContext';
+import { useAuth } from '../context/DemoAuthContext';
 
-// Convert mock users to sample format
-const sampleUsers = MOCK_USERS.map(user => ({
-  id: parseInt(user.uid),
-  name: user.profile.displayName,
-  skills: user.profile.skills,
-  wantToLearn: user.profile.wantToLearn,
-  isOnline: user.profile.isOnline,
-  bio: user.profile.bio
-}));
+// Sample users for homepage display
+const sampleUsers = [
+  {
+    id: 1,
+    name: 'สมใจ',
+    skills: ['ภาษาไทย', 'การเขียน', 'การสื่อสาร'],
+    wantToLearn: ['กีตาร์', 'ทฤษฎีดนตรี', 'เปียโน'],
+    isOnline: true,
+    bio: 'ครูสอนภาษาไทยมี 5 ปีประสบการณ์'
+  },
+  {
+    id: 2,
+    name: 'นักดนตรี',
+    skills: ['กีตาร์', 'เปียโน', 'ทฤษฎีดนตรี'],
+    wantToLearn: ['ภาษาอังกฤษ', 'การพูดในที่สาธารณะ'],
+    isOnline: true,
+    bio: 'ครูสอนดนตรีมืออาชีพ 10+ ปี'
+  }
+];
 
 const sampleAppointments = [
   { id: 1, date: '2025-10-20', time: '14:00', partner: 'Martin', details: 'English conversation & guitar lesson exchange' },

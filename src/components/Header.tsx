@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../context/MockAuthContext';
+import { useAuth } from '../context/DemoAuthContext';
 
 const Header: React.FC = () => {
   const { user, userProfile, logout } = useAuth();

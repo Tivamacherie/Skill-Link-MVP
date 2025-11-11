@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/MockAuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/DemoAuthContext';
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   
   const { signup } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -45,8 +46,10 @@ const Register: React.FC = () => {
       setError('');
       setLoading(true);
       await signup(email, password, displayName);
+      navigate('/home'); // Redirect to home page after successful registration
     } catch (error: any) {
-      setError('Failed to create account: ' + error.message);
+      setError(error.message);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -65,6 +68,17 @@ const Register: React.FC = () => {
           <h1 style={{ color: 'var(--loyal-blue)', marginBottom: '10px' }}>Skill-Link</h1>
           <h2 style={{ color: 'var(--loyal-blue)' }}>Join Our Community</h2>
           <p style={{ color: 'var(--dark-gray)' }}>Start exchanging skills and knowledge</p>
+          
+          <div style={{ 
+            backgroundColor: '#e8f5e8', 
+            color: '#2e7d2e', 
+            padding: '10px', 
+            borderRadius: '5px',
+            marginTop: '15px',
+            fontSize: '0.9rem'
+          }}>
+            🎉 <strong>Demo Mode:</strong> ใช้งานได้ทันทีไม่ต้องตั้งค่า Firebase!
+          </div>
         </div>
 
         {error && (

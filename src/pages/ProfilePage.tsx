@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/MockAuthContext';
+import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../context/DemoAuthContext';
 
 const ProfilePage: React.FC = () => {
-  const { user, userProfile, updateUserProfile } = useAuth();
+  const { user, userProfile, updateUserProfile, uploadProfilePhoto } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     displayName: '',
@@ -71,8 +73,42 @@ const ProfilePage: React.FC = () => {
     setMessage('');
   };
 
-  const handleImageUpload = () => {
-    alert('Profile picture upload feature would be implemented here with Firebase Storage');
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setMessage('Please select an image file');
+      setTimeout(() => setMessage(''), 3000);
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage('Image must be less than 5MB');
+      setTimeout(() => setMessage(''), 3000);
+      return;
+    }
+
+    try {
+      setUploadingPhoto(true);
+      setMessage('');
+      
+      const photoURL = await uploadProfilePhoto(file);
+      setMessage('Profile photo updated successfully!');
+      
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error: any) {
+      setMessage('Error uploading photo: ' + error.message);
+      setTimeout(() => setMessage(''), 5000);
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
   };
 
   // Sample statistics - in production this would come from your MySQL database
@@ -122,11 +158,32 @@ const ProfilePage: React.FC = () => {
               margin: '0 auto 20px auto',
               border: '4px solid var(--loyal-blue)',
               position: 'relative',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              backgroundImage: userProfile?.photoURL ? `url(${userProfile.photoURL})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              overflow: 'hidden'
             }}
-            onClick={handleImageUpload}
+            onClick={handleImageClick}
             >
-              {userProfile?.displayName?.charAt(0) || user?.email?.charAt(0) || '?'}
+              {!userProfile?.photoURL && (userProfile?.displayName?.charAt(0) || user?.email?.charAt(0) || '?')}
+              {uploadingPhoto && (
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0,0,0,0.7)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '1rem'
+                }}>
+                  Uploading...
+                </div>
+              )}
               <div style={{
                 position: 'absolute',
                 bottom: '10px',
@@ -145,6 +202,15 @@ const ProfilePage: React.FC = () => {
                 📷
               </div>
             </div>
+            
+            {/* Hidden file input */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageUpload}
+              accept="image/*"
+              style={{ display: 'none' }}
+            />
             
             <h3 style={{ color: 'var(--loyal-blue)', marginBottom: '5px' }}>
               {userProfile?.displayName || 'User'}

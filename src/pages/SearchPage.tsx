@@ -1,97 +1,53 @@
-import React, { useState } from 'react';
-import { useAuth, MOCK_USERS } from '../context/MockAuthContext';
-
-// Convert mock users to sample format
-const sampleUsers = MOCK_USERS.map(user => ({
-  id: parseInt(user.uid),
-  name: user.profile.displayName,
-  skills: user.profile.skills,
-  wantToLearn: user.profile.wantToLearn,
-  isOnline: user.profile.isOnline,
-  bio: user.profile.bio
-}));
-
-// Additional sample users for more variety
-const additionalSampleUsers = [
-  { 
-    id: 1, 
-    name: 'Martin', 
-    skills: ['English', 'Writing', 'Communication'], 
-    wantToLearn: ['Guitar', 'Music Theory', 'Piano'], 
-    isOnline: true,
-    bio: 'Native English speaker with 5 years of teaching experience. Love helping people improve their communication skills!'
-  },
-  { 
-    id: 2, 
-    name: 'Maria', 
-    skills: ['Guitar', 'Piano', 'Music Theory'], 
-    wantToLearn: ['English', 'Public Speaking', 'Writing'], 
-    isOnline: true,
-    bio: 'Professional music teacher with 10+ years experience. Specializing in beginner to intermediate guitar and piano.'
-  },
-  { 
-    id: 3, 
-    name: 'Alex', 
-    skills: ['Programming', 'React', 'JavaScript', 'Web Development'], 
-    wantToLearn: ['Design', 'Photography', 'Video Editing'], 
-    isOnline: false,
-    bio: 'Full-stack developer passionate about teaching coding. Available evenings and weekends.'
-  },
-  { 
-    id: 4, 
-    name: 'Sophie', 
-    skills: ['French', 'Cooking', 'Baking'], 
-    wantToLearn: ['Programming', 'Web Development', 'Data Science'], 
-    isOnline: true,
-    bio: 'French native speaker and professional chef. Would love to learn tech skills in exchange for language and cooking lessons!'
-  },
-  { 
-    id: 5, 
-    name: 'David', 
-    skills: ['Photography', 'Video Editing', 'Photoshop'], 
-    wantToLearn: ['Programming', 'Marketing'], 
-    isOnline: true,
-    bio: 'Creative professional with expertise in visual content creation. Looking to expand into digital marketing.'
-  }
-];
+import React, { useState, useEffect } from 'react';
+import { useAuth, UserProfile } from '../context/DemoAuthContext';
 
 const SearchPage: React.FC = () => {
-  const { userProfile } = useAuth();
+  const { userProfile, searchUsers, getAllUsers } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState([...sampleUsers, ...additionalSampleUsers]);
+  const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    
-    // Combine mock users and additional sample users
-    const allUsers = [...sampleUsers, ...additionalSampleUsers];
-    
-    if (!query.trim()) {
-      setFilteredUsers(allUsers);
-      return;
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+      const users = await getAllUsers();
+      setFilteredUsers(users);
+    } catch (error) {
+      console.error('Error loading users:', error);
+    } finally {
+      setLoading(false);
     }
-
-    const filtered = allUsers.filter(user => 
-      user.name.toLowerCase().includes(query.toLowerCase()) ||
-      user.skills.some(skill => skill.toLowerCase().includes(query.toLowerCase())) ||
-      user.wantToLearn.some(skill => skill.toLowerCase().includes(query.toLowerCase())) ||
-      user.bio.toLowerCase().includes(query.toLowerCase())
-    );
-
-    setFilteredUsers(filtered);
   };
 
-  const getMatchInfo = (user: any) => {
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    
+    try {
+      setLoading(true);
+      const users = await searchUsers(query);
+      setFilteredUsers(users);
+    } catch (error) {
+      console.error('Error searching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMatchInfo = (user: UserProfile) => {
     if (!userProfile) return null;
 
     const mySkills = userProfile.skills.map(s => s.toLowerCase());
     const myWants = userProfile.wantToLearn.map(s => s.toLowerCase());
-    const theirSkills = user.skills.map((s: string) => s.toLowerCase());
-    const theirWants = user.wantToLearn.map((s: string) => s.toLowerCase());
+    const theirSkills = user.skills.map(s => s.toLowerCase());
+    const theirWants = user.wantToLearn.map(s => s.toLowerCase());
 
     // Find mutual teaching opportunities
-    const iCanTeach = mySkills.filter((skill: string) => theirWants.includes(skill));
-    const theyCanTeach = theirSkills.filter((skill: string) => myWants.includes(skill));
+    const iCanTeach = mySkills.filter(skill => theirWants.includes(skill));
+    const theyCanTeach = theirSkills.filter(skill => myWants.includes(skill));
 
     if (iCanTeach.length > 0 && theyCanTeach.length > 0) {
       return {
@@ -114,11 +70,11 @@ const SearchPage: React.FC = () => {
   };
 
   const handleConnect = (user: any) => {
-    alert(`Connection request sent to ${user.name}! They will be notified and can respond to start chatting.`);
+    alert(`Connection request sent to ${user.displayName}! They will be notified and can respond to start chatting.`);
   };
 
   const handleBookSession = (user: any) => {
-    alert(`Opening booking calendar for ${user.name}. This will connect to the appointment system.`);
+    alert(`Opening booking calendar for ${user.displayName}. This will connect to the appointment system.`);
   };
 
   return (
@@ -192,10 +148,15 @@ const SearchPage: React.FC = () => {
           marginBottom: '20px',
           textAlign: 'center'
         }}>
-          {filteredUsers.length} {filteredUsers.length === 1 ? 'Match' : 'Matches'} Found
+          {loading ? 'Searching...' : `${filteredUsers.length} ${filteredUsers.length === 1 ? 'Match' : 'Matches'} Found`}
         </h3>
 
-        {filteredUsers.length === 0 ? (
+        {loading ? (
+          <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+            <h4 style={{ color: 'var(--loyal-blue)', marginBottom: '10px' }}>Loading users...</h4>
+            <p style={{ color: 'var(--dark-gray)' }}>Please wait while we find matching users</p>
+          </div>
+        ) : filteredUsers.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
             <h4 style={{ color: 'var(--loyal-blue)', marginBottom: '10px' }}>No matches found</h4>
             <p style={{ color: 'var(--dark-gray)' }}>
@@ -214,7 +175,7 @@ const SearchPage: React.FC = () => {
             {filteredUsers.map(user => {
               const matchInfo = getMatchInfo(user);
               return (
-                <div key={user.id} className="card" style={{ 
+                <div key={user.uid} className="card" style={{ 
                   border: matchInfo?.type === 'perfect' ? '3px solid var(--success-green)' : undefined 
                 }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
@@ -230,15 +191,19 @@ const SearchPage: React.FC = () => {
                       justifyContent: 'center',
                       fontSize: '1.5rem',
                       fontWeight: 'bold',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      backgroundImage: user.photoURL ? `url(${user.photoURL})` : 'none',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      overflow: 'hidden'
                     }}>
-                      {user.name.charAt(0)}
+                      {!user.photoURL && user.displayName.charAt(0)}
                     </div>
 
                     {/* User Info */}
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                        <h3 style={{ color: 'var(--loyal-blue)', margin: 0 }}>{user.name}</h3>
+                        <h3 style={{ color: 'var(--loyal-blue)', margin: 0 }}>{user.displayName}</h3>
                         <div className={`status-indicator ${user.isOnline ? 'online' : 'offline'}`}></div>
                         <span style={{ 
                           fontSize: '0.9rem',

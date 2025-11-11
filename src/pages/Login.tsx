@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/MockAuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/DemoAuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +9,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,8 +23,9 @@ const Login: React.FC = () => {
       setError('');
       setLoading(true);
       await login(email, password);
+      navigate('/home'); // Redirect to home page after successful login
     } catch (error: any) {
-      setError('Failed to log in: ' + error.message);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -94,17 +96,16 @@ const Login: React.FC = () => {
 
         <div style={{ textAlign: 'center' }}>
           <div style={{ 
-            marginBottom: '15px',
-            padding: '10px',
-            backgroundColor: '#e3f2fd',
+            backgroundColor: '#e8f5e8', 
+            color: '#2e7d2e', 
+            padding: '10px', 
             borderRadius: '5px',
-            fontSize: '0.9rem',
-            color: 'var(--loyal-blue)'
+            marginBottom: '15px',
+            fontSize: '0.9rem'
           }}>
-            <strong>Demo Accounts:</strong><br/>
-            📧 martin@test.com | 🔑 123456<br/>
-            📧 maria@test.com | 🔑 123456<br/>
-            📧 test@test.com | 🔑 123456
+            🎉 <strong>Demo Mode:</strong> ลองใช้ได้เลย!<br/>
+            📧 demo1@test.com | 🔑 123456<br/>
+            📧 demo2@test.com | 🔑 123456
           </div>
           <p style={{ color: 'var(--dark-gray)' }}>
             Don't have an account?{' '}

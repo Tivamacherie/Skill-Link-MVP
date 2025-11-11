@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/MockAuthContext';
+import { useAuth } from './context/DemoAuthContext';
 
 // Components
 import LoadingScreen from './components/LoadingScreen';
