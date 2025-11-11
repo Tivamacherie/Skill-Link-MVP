@@ -103,9 +103,9 @@ const Login: React.FC = () => {
             marginBottom: '15px',
             fontSize: '0.9rem'
           }}>
-            🎉 <strong>Demo Mode:</strong> ลองใช้ได้เลย!<br/>
-            📧 demo1@test.com | 🔑 123456<br/>
-            📧 demo2@test.com | 🔑 123456
+            🎉 <strong>Demo Mode:</strong> Try it now!<br/>
+            📧 sarah.teacher@demo.com | 🔑 123456<br/>
+            📧 mike.guitar@demo.com | 🔑 123456
           </div>
           <p style={{ color: 'var(--dark-gray)' }}>
             Don't have an account?{' '}

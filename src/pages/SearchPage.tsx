@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, UserProfile } from '../context/DemoAuthContext';
+import { startConversation } from '../utils/chatUtils';
 
 const SearchPage: React.FC = () => {
-  const { userProfile, searchUsers, getAllUsers } = useAuth();
+  const { userProfile, searchUsers, getAllUsers, user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,14 +71,54 @@ const SearchPage: React.FC = () => {
   };
 
   const handleConnect = (user: any) => {
-    alert(`Connection request sent to ${user.displayName}! They will be notified and can respond to start chatting.`);
+    if (!user || !userProfile) {
+      alert('Please log in to connect with users');
+      return;
+    }
+
+    try {
+      const conversationId = startConversation(
+        user.uid, 
+        user.displayName, 
+        userProfile.uid, 
+        userProfile.displayName
+      );
+      alert(`Connected with ${user.displayName}! You can now chat in the Messages tab.`);
+      // Optional: Navigate to chat page
+      // window.location.href = '/chat';
+    } catch (error) {
+      alert('Failed to start conversation. Please try again.');
+    }
   };
 
-  const handleBookSession = (user: any) => {
-    alert(`Opening booking calendar for ${user.displayName}. This will connect to the appointment system.`);
-  };
+  const handleBook = (user: any) => {
+    if (!user || !userProfile) {
+      alert('Please log in to book sessions');
+      return;
+    }
 
-  return (
+    const bookingDate = prompt(`Book a session with ${user.displayName}:\nEnter preferred date and time (e.g., "Tomorrow 3PM" or "Dec 25, 2PM"):`);
+    
+    if (bookingDate && bookingDate.trim()) {
+      // Store booking in localStorage
+      const bookings = JSON.parse(localStorage.getItem('skill-link-bookings') || '[]');
+      const newBooking = {
+        id: `booking_${Date.now()}`,
+        bookerName: userProfile.displayName,
+        bookerUid: userProfile.uid,
+        providerName: user.displayName,
+        providerUid: user.uid,
+        requestedDateTime: bookingDate.trim(),
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        skill: user.skills?.join(', ') || 'General consultation'
+      };
+      bookings.push(newBooking);
+      localStorage.setItem('skill-link-bookings', JSON.stringify(bookings));
+      
+      alert(`Booking request sent to ${user.displayName}!\nRequested time: ${bookingDate}\n\nThey will be notified and can confirm your appointment.`);
+    }
+  };  return (
     <div className="page">
       <h2 style={{ color: 'var(--loyal-blue)', marginBottom: '30px', textAlign: 'center' }}>
         Find Your Learning Partners
@@ -120,7 +161,7 @@ const SearchPage: React.FC = () => {
           fontSize: '0.9rem'
         }}>
           <span style={{ color: 'var(--dark-gray)' }}>Popular skills:</span>
-          {['English', 'Guitar', 'Programming', 'French', 'Photography'].map(skill => (
+          {['English', 'Guitar', 'Programming', 'French', 'Photography', 'Cooking', 'Spanish', 'Piano'].map(skill => (
             <button
               key={skill}
               onClick={() => handleSearch(skill)}
@@ -278,7 +319,7 @@ const SearchPage: React.FC = () => {
                         </button>
                         <button 
                           className="btn btn-success"
-                          onClick={() => handleBookSession(user)}
+                          onClick={() => handleBook(user)}
                           style={{ flex: '1', minWidth: '120px' }}
                         >
                           📅 Book Session

@@ -77,7 +77,7 @@ const Register: React.FC = () => {
             marginTop: '15px',
             fontSize: '0.9rem'
           }}>
-            🎉 <strong>Demo Mode:</strong> ใช้งานได้ทันทีไม่ต้องตั้งค่า Firebase!
+            🎉 <strong>Demo Mode:</strong> Works instantly without Firebase setup!
           </div>
         </div>
 

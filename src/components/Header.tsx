@@ -17,9 +17,9 @@ const Header: React.FC = () => {
       <div className="header-content">
         <h1 className="app-title">Skill-Link</h1>
         <div className="user-info">
-          {userProfile && (
+          {user && (
             <>
-              <span>Hello, {userProfile.displayName || user?.email}</span>
+              <span>Hello, {userProfile?.displayName || user?.email || 'User'}</span>
               <button onClick={handleLogout} className="logout-btn">
                 Logout
               </button>

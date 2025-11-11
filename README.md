@@ -295,7 +295,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Issues**: GitHub Issues tab
 - **Documentation**: Check `/docs` folder
-- **Email**: support@skill-link.app
+- **Email**: rungtiwa1616ii@gmail.com
 - **Discord**: Join our developer community
 
 ---

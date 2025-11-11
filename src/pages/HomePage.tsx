@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/DemoAuthContext';
+import BookingsView from '../components/BookingsView';
 
 // Sample users for homepage display
 const sampleUsers = [
   {
     id: 1,
-    name: 'สมใจ',
-    skills: ['ภาษาไทย', 'การเขียน', 'การสื่อสาร'],
-    wantToLearn: ['กีตาร์', 'ทฤษฎีดนตรี', 'เปียโน'],
+    name: 'Zain',
+    skills: ['singing', 'Dancing', 'communicate'],
+    wantToLearn: ['hair style', 'cooking', 'coding'],
     isOnline: true,
-    bio: 'ครูสอนภาษาไทยมี 5 ปีประสบการณ์'
+    bio: 'Wordwild singer'
   },
   {
     id: 2,
-    name: 'นักดนตรี',
-    skills: ['กีตาร์', 'เปียโน', 'ทฤษฎีดนตรี'],
-    wantToLearn: ['ภาษาอังกฤษ', 'การพูดในที่สาธารณะ'],
+    name: 'Sebastain',
+    skills: ['guitar', 'piano', 'ballet'],
+    wantToLearn: ['English', 'English communicate'],
     isOnline: true,
-    bio: 'ครูสอนดนตรีมืออาชีพ 10+ ปี'
+    bio: 'Professional musicain'
   }
 ];
 
@@ -111,6 +112,11 @@ const HomePage: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Real Bookings Section */}
+      <div className="card">
+        <BookingsView />
       </div>
 
       {/* Calendar Section */}

@@ -49,38 +49,218 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 let DEMO_USERS: any[] = [
   {
     uid: '1',
-    email: 'demo1@test.com',
+    email: 'sarah.teacher@demo.com',
     password: '123456',
     profile: {
       uid: '1',
-      email: 'demo1@test.com',
-      displayName: 'สมใจ',
-      skills: ['ภาษาไทย', 'การเขียน', 'การสื่อสาร'],
-      wantToLearn: ['กีตาร์', 'ทฤษฎีดนตรี', 'เปียโน'],
-      bio: 'ครูสอนภาษาไทยมี 5 ปีประสบการณ์ รักการช่วยเหลือผู้คนในการพัฒนาทักษะการสื่อสาร',
+      email: 'sarah.teacher@demo.com',
+      displayName: 'Sarah Wilson',
+      skills: ['English Teaching', 'IELTS Preparation', 'Business English', 'Conversation Practice'],
+      wantToLearn: ['Spanish', 'Guitar', 'Cooking', 'Photography'],
+      bio: 'Certified English teacher with 8 years of experience. I specialize in helping students improve their conversational skills and prepare for IELTS exams.',
       createdAt: new Date('2024-01-15'),
       lastSeen: new Date(),
       isOnline: true,
-      rating: 4.8,
-      completedSessions: 12
+      rating: 4.9,
+      completedSessions: 156
     }
   },
   {
-    uid: '2', 
-    email: 'demo2@test.com',
+    uid: '2',
+    email: 'mike.guitar@demo.com',
     password: '123456',
     profile: {
       uid: '2',
-      email: 'demo2@test.com',
-      displayName: 'นักดนตรี',
-      skills: ['กีตาร์', 'เปียโน', 'ทฤษฎีดนตรี'],
-      wantToLearn: ['ภาษาอังกฤษ', 'การพูดในที่สาธารณะ', 'การเขียน'],
-      bio: 'ครูสอนดนตรีมืออาชีพ 10+ ปี เชี่ยวชาญกีตาร์และเปียโนตั้งแต่ระดับเริ่มต้นถึงระดับกลาง',
+      email: 'mike.guitar@demo.com',
+      displayName: 'Mike Rodriguez',
+      skills: ['Guitar', 'Piano', 'Music Theory', 'Song Writing'],
+      wantToLearn: ['French', 'Cooking', 'Photography', 'Digital Marketing'],
+      bio: 'Professional musician and music teacher with 12+ years of experience. I teach guitar from beginner to advanced levels.',
       createdAt: new Date('2024-02-01'),
       lastSeen: new Date(),
       isOnline: true,
+      rating: 4.8,
+      completedSessions: 89
+    }
+  },
+  {
+    uid: '3',
+    email: 'emma.dev@demo.com',
+    password: '123456',
+    profile: {
+      uid: '3',
+      email: 'emma.dev@demo.com',
+      displayName: 'Emma Chen',
+      skills: ['React', 'JavaScript', 'Python', 'Web Development', 'UI/UX Design'],
+      wantToLearn: ['Mandarin', 'Violin', 'Yoga', 'Investment'],
+      bio: 'Full-stack developer passionate about teaching coding. I help beginners start their programming journey.',
+      createdAt: new Date('2024-02-15'),
+      lastSeen: new Date(),
+      isOnline: false,
+      rating: 4.7,
+      completedSessions: 67
+    }
+  },
+  {
+    uid: '4',
+    email: 'chef.antonio@demo.com',
+    password: '123456',
+    profile: {
+      uid: '4',
+      email: 'chef.antonio@demo.com',
+      displayName: 'Antonio Rossi',
+      skills: ['Italian Cooking', 'Pasta Making', 'Wine Pairing', 'Baking'],
+      wantToLearn: ['English', 'Photography', 'Guitar', 'Business'],
+      bio: 'Professional chef from Italy. I love sharing authentic Italian recipes and cooking techniques with food enthusiasts.',
+      createdAt: new Date('2024-03-01'),
+      lastSeen: new Date(),
+      isOnline: true,
       rating: 4.9,
-      completedSessions: 25
+      completedSessions: 98
+    }
+  },
+  {
+    uid: '5',
+    email: 'dr.lisa@demo.com',
+    password: '123456',
+    profile: {
+      uid: '5',
+      email: 'dr.lisa@demo.com',
+      displayName: 'Dr. Lisa Park',
+      skills: ['Korean Language', 'Medical Knowledge', 'Study Techniques', 'TOPIK Preparation'],
+      wantToLearn: ['Piano', 'Drawing', 'French', 'Rock Climbing'],
+      bio: 'Korean doctor and language teacher. I help students learn Korean effectively and prepare for TOPIK exams.',
+      createdAt: new Date('2024-03-10'),
+      lastSeen: new Date(),
+      isOnline: true,
+      rating: 4.8,
+      completedSessions: 134
+    }
+  },
+  {
+    uid: '6',
+    email: 'yoga.master@demo.com',
+    password: '123456',
+    profile: {
+      uid: '6',
+      email: 'yoga.master@demo.com',
+      displayName: 'Maya Singh',
+      skills: ['Yoga', 'Meditation', 'Mindfulness', 'Pilates', 'Wellness Coaching'],
+      wantToLearn: ['Spanish', 'Cooking', 'Photography', 'Writing'],
+      bio: 'Certified yoga instructor with expertise in Hatha and Vinyasa yoga. I help people find balance in mind and body.',
+      createdAt: new Date('2024-03-20'),
+      lastSeen: new Date(),
+      isOnline: false,
+      rating: 4.9,
+      completedSessions: 201
+    }
+  },
+  {
+    uid: '7',
+    email: 'photo.pro@demo.com',
+    password: '123456',
+    profile: {
+      uid: '7',
+      email: 'photo.pro@demo.com',
+      displayName: 'James Thompson',
+      skills: ['Photography', 'Lightroom', 'Photoshop', 'Portrait Photography', 'Wedding Photography'],
+      wantToLearn: ['Video Editing', 'Japanese', 'Guitar', 'Business'],
+      bio: 'Professional photographer specializing in portraits and weddings. I teach photography techniques from basics to advanced.',
+      createdAt: new Date('2024-04-01'),
+      lastSeen: new Date(),
+      isOnline: true,
+      rating: 4.6,
+      completedSessions: 78
+    }
+  },
+  {
+    uid: '8',
+    email: 'french.native@demo.com',
+    password: '123456',
+    profile: {
+      uid: '8',
+      email: 'french.native@demo.com',
+      displayName: 'Sophie Dubois',
+      skills: ['French Language', 'French Culture', 'Translation', 'DELF Preparation'],
+      wantToLearn: ['Yoga', 'Cooking', 'Programming', 'Drawing'],
+      bio: 'Native French speaker from Paris. I teach French language and culture, helping students achieve fluency naturally.',
+      createdAt: new Date('2024-04-15'),
+      lastSeen: new Date(),
+      isOnline: true,
+      rating: 4.8,
+      completedSessions: 112
+    }
+  },
+  {
+    uid: '9',
+    email: 'fitness.coach@demo.com',
+    password: '123456',
+    profile: {
+      uid: '9',
+      email: 'fitness.coach@demo.com',
+      displayName: 'Alex Johnson',
+      skills: ['Personal Training', 'Nutrition', 'Weight Loss', 'Strength Training', 'CrossFit'],
+      wantToLearn: ['Spanish', 'Cooking', 'Photography', 'Guitar'],
+      bio: 'Certified personal trainer and nutrition specialist. I help people achieve their fitness goals through personalized training programs.',
+      createdAt: new Date('2024-05-01'),
+      lastSeen: new Date(),
+      isOnline: false,
+      rating: 4.7,
+      completedSessions: 143
+    }
+  },
+  {
+    uid: '10',
+    email: 'art.teacher@demo.com',
+    password: '123456',
+    profile: {
+      uid: '10',
+      email: 'art.teacher@demo.com',
+      displayName: 'Maria Garcia',
+      skills: ['Drawing', 'Painting', 'Digital Art', 'Art History', 'Watercolor'],
+      wantToLearn: ['Photography', 'Guitar', 'Italian', 'Cooking'],
+      bio: 'Professional artist and art teacher. I teach various drawing and painting techniques for all skill levels.',
+      createdAt: new Date('2024-05-15'),
+      lastSeen: new Date(),
+      isOnline: true,
+      rating: 4.8,
+      completedSessions: 95
+    }
+  },
+  {
+    uid: '11',
+    email: 'spanish.tutor@demo.com',
+    password: '123456',
+    profile: {
+      uid: '11',
+      email: 'spanish.tutor@demo.com',
+      displayName: 'Carlos Mendez',
+      skills: ['Spanish Language', 'Latin American Culture', 'DELE Preparation', 'Business Spanish'],
+      wantToLearn: ['English', 'Programming', 'Photography', 'Fitness'],
+      bio: 'Native Spanish speaker from Mexico. I specialize in conversational Spanish and helping students prepare for DELE exams.',
+      createdAt: new Date('2024-06-01'),
+      lastSeen: new Date(),
+      isOnline: true,
+      rating: 4.9,
+      completedSessions: 87
+    }
+  },
+  {
+    uid: '12',
+    email: 'piano.virtuoso@demo.com',
+    password: '123456',
+    profile: {
+      uid: '12',
+      email: 'piano.virtuoso@demo.com',
+      displayName: 'David Kim',
+      skills: ['Piano', 'Music Theory', 'Classical Music', 'Jazz Piano', 'Composition'],
+      wantToLearn: ['Korean', 'Cooking', 'Photography', 'Web Development'],
+      bio: 'Classically trained pianist with performance experience. I teach piano from beginner to advanced levels.',
+      createdAt: new Date('2024-06-15'),
+      lastSeen: new Date(),
+      isOnline: false,
+      rating: 4.8,
+      completedSessions: 156
     }
   }
 ];
@@ -122,7 +302,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     const existingUser = DEMO_USERS.find(u => u.email === email);
     if (existingUser) {
-      throw new Error('อีเมลนี้มีผู้ใช้งานแล้ว');
+      throw new Error('This email is already registered');
     }
 
     const newUser = {
@@ -162,7 +342,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     const demoUser = DEMO_USERS.find(u => u.email === email && u.password === password);
     if (!demoUser) {
-      throw new Error('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+      throw new Error('Invalid email or password');
     }
 
     const loggedInUser = {
@@ -197,7 +377,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const updateUserPassword = async (newPassword: string) => {
-    if (!user) throw new Error('ไม่พบผู้ใช้งาน');
+    if (!user) throw new Error('No authenticated user');
     await new Promise(resolve => setTimeout(resolve, 500));
     
     const userIndex = DEMO_USERS.findIndex(u => u.uid === user.uid);
@@ -207,15 +387,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const uploadProfilePhoto = async (file: File): Promise<string> => {
-    if (!user) throw new Error('ไม่พบผู้ใช้งาน');
+    if (!user) throw new Error('No authenticated user');
     
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // สร้าง URL จำลองสำหรับรูปภาพ
-    const fakeURL = `https://via.placeholder.com/150x150/4285F4/white?text=${encodeURIComponent(userProfile?.displayName?.charAt(0) || 'U')}`;
+    // Create a real URL for the uploaded image using FileReader
+    const photoURL = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          resolve(e.target.result as string);
+        } else {
+          reject(new Error('Failed to read file'));
+        }
+      };
+      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.readAsDataURL(file);
+    });
     
     if (userProfile) {
-      const updatedProfile = { ...userProfile, photoURL: fakeURL };
+      const updatedProfile = { ...userProfile, photoURL };
       setUserProfile(updatedProfile);
       
       const userIndex = DEMO_USERS.findIndex(u => u.uid === user.uid);
@@ -224,7 +415,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
     
-    return fakeURL;
+    return photoURL;
   };
 
   const searchUsers = async (query: string): Promise<UserProfile[]> => {
